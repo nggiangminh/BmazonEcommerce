@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,8 +23,8 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "total")
-    private Integer total;
+    @Column(name = "total", precision = 10, scale = 2)
+    private BigDecimal total;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -49,11 +50,11 @@ public class Cart {
         this.user = user;
     }
 
-    public Integer getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

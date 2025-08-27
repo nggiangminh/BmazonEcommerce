@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -30,9 +28,8 @@ public class Product {
     @Column(name = "cover")
     private String cover;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private SubCategory subCategory;
+    @Column(name = "category_id")
+    private Integer categoryId;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -82,12 +79,12 @@ public class Product {
         this.cover = cover;
     }
 
-    public SubCategory getSubCategory() {
-        return subCategory;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setSubCategory(SubCategory subCategory) {
-        this.subCategory = subCategory;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public LocalDateTime getCreated_at() {

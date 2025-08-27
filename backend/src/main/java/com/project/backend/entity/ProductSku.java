@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,8 +34,8 @@ public class ProductSku {
     @Column(name = "sku")
     private String sku;
 
-    @Column(name = "price")
-    private String price;
+    @Column(name = "price", precision = 10, scale = 2)
+    private BigDecimal price;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -62,8 +63,8 @@ public class ProductSku {
     public String getSku() { return sku; }
     public void setSku(String sku) { this.sku = sku; }
 
-    public String getPrice() { return price; }
-    public void setPrice(String price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }

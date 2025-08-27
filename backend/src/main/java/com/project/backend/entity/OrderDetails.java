@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,8 +28,8 @@ public class OrderDetails {
     @JoinColumn(name = "payment_id")
     private PaymentDetails payment;
 
-    @Column(name = "total")
-    private Integer total;
+    @Column(name = "total", precision = 10, scale = 2)
+    private BigDecimal total;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -47,8 +48,8 @@ public class OrderDetails {
     public PaymentDetails getPayment() { return payment; }
     public void setPayment(PaymentDetails payment) { this.payment = payment; }
 
-    public Integer getTotal() { return total; }
-    public void setTotal(Integer total) { this.total = total; }
+    public BigDecimal getTotal() { return total; }
+    public void setTotal(BigDecimal total) { this.total = total; }
 
     public LocalDateTime getCreated_at() { return created_at; }
     public void setCreated_at(LocalDateTime created_at) { this.created_at = created_at; }

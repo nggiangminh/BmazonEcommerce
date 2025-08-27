@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
@@ -135,5 +136,10 @@ public class User {
 
 	public void setDeleted_at(LocalDateTime deleted_at) {
 		this.deleted_at = deleted_at;
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		created_at = LocalDateTime.now();
 	}
 }

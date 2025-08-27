@@ -2,6 +2,8 @@ package com.project.backend.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,14 +25,15 @@ public class PaymentDetails {
     @JoinColumn(name = "order_id")
     private OrderDetails order;
 
-    @Column(name = "amount")
-    private Integer amount;
+    @Column(name = "amount", precision = 10, scale = 2)
+    private BigDecimal amount;
 
     @Column(name = "provider")
     private String provider;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private PaymentStatus status;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -45,14 +49,14 @@ public class PaymentDetails {
     public OrderDetails getOrder() { return order; }
     public void setOrder(OrderDetails order) { this.order = order; }
 
-    public Integer getAmount() { return amount; }
-    public void setAmount(Integer amount) { this.amount = amount; }
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
 
     public String getProvider() { return provider; }
     public void setProvider(String provider) { this.provider = provider; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public PaymentStatus getStatus() { return status; }
+    public void setStatus(PaymentStatus status) { this.status = status; }
 
     public LocalDateTime getCreated_at() { return created_at; }
     public void setCreated_at(LocalDateTime created_at) { this.created_at = created_at; }
