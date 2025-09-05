@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "addresses")
@@ -17,7 +18,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,10 +28,10 @@ public class Address {
     private String title;
 
     @Column(name = "address_line_1")
-    private String address_line_1;
+    private String addressLine1;
 
     @Column(name = "address_line_2")
-    private String address_line_2;
+    private String addressLine2;
 
     @Column(name = "country")
     private String country;
@@ -39,27 +40,27 @@ public class Address {
     private String city;
 
     @Column(name = "postal_code")
-    private String postal_code;
+    private String postalCode;
 
     @Column(name = "landmark")
     private String landmark;
 
     @Column(name = "phone_number")
-    private String phone_number;
+    private String phoneNumber;
 
     @Column(name = "created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(name = "deleted_at")
-    private LocalDateTime deleted_at;
+    private LocalDateTime deletedAt;
 
     public Address() {}
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -79,20 +80,20 @@ public class Address {
         this.title = title;
     }
 
-    public String getAddress_line_1() {
-        return address_line_1;
+    public String getAddressLine1() {
+        return addressLine1;
     }
 
-    public void setAddress_line_1(String address_line_1) {
-        this.address_line_1 = address_line_1;
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
     }
 
-    public String getAddress_line_2() {
-        return address_line_2;
+    public String getAddressLine2() {
+        return addressLine2;
     }
 
-    public void setAddress_line_2(String address_line_2) {
-        this.address_line_2 = address_line_2;
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
     }
 
     public String getCountry() {
@@ -111,12 +112,12 @@ public class Address {
         this.city = city;
     }
 
-    public String getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(String postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getLandmark() {
@@ -127,27 +128,27 @@ public class Address {
         this.landmark = landmark;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getDeleted_at() {
-        return deleted_at;
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
     }
 
-    public void setDeleted_at(LocalDateTime deleted_at) {
-        this.deleted_at = deleted_at;
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

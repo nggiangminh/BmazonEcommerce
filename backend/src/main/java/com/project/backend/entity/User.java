@@ -2,6 +2,8 @@ package com.project.backend.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,22 +12,23 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private UUID id;
 
 	@Column(name = "avatar")
 	private String avatar;
 
 	@Column(name = "first_name")
-	private String first_name;
+	private String firstName;
 
 	@Column(name = "last_name")
-	private String last_name;
+	private String lastName;
 
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
@@ -37,24 +40,28 @@ public class User {
 	private String password;
 
 	@Column(name = "birth_of_date")
-	private LocalDate birth_of_date;
+	private LocalDate birthOfDate;
 
 	@Column(name = "phone_number")
-	private String phone_number;
+	private String phoneNumber;
 
 	@Column(name = "created_at")
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 
 	@Column(name = "deleted_at")
-	private LocalDateTime deleted_at;
+	private LocalDateTime deletedAt;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role", nullable = false)
+	private Role role;
 
 	public User() {}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -66,20 +73,20 @@ public class User {
 		this.avatar = avatar;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getUsername() {
@@ -106,40 +113,40 @@ public class User {
 		this.password = password;
 	}
 
-	public LocalDate getBirth_of_date() {
-		return birth_of_date;
+	public LocalDate getBirthOfDate() {
+		return birthOfDate;
 	}
 
-	public void setBirth_of_date(LocalDate birth_of_date) {
-		this.birth_of_date = birth_of_date;
+	public void setBirthOfDate(LocalDate birthOfDate) {
+		this.birthOfDate = birthOfDate;
 	}
 
-	public String getPhone_number() {
-		return phone_number;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
-	public LocalDateTime getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(LocalDateTime created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public LocalDateTime getDeleted_at() {
-		return deleted_at;
+	public LocalDateTime getDeletedAt() {
+		return deletedAt;
 	}
 
-	public void setDeleted_at(LocalDateTime deleted_at) {
-		this.deleted_at = deleted_at;
+	public void setDeletedAt(LocalDateTime deletedAt) {
+		this.deletedAt = deletedAt;
 	}
 
 	@PrePersist
 	protected void onCreate() {
-		created_at = LocalDateTime.now();
+		createdAt = LocalDateTime.now();
 	}
 }
