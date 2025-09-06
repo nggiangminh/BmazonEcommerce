@@ -1,5 +1,6 @@
 package com.project.backend.entity;
 
+import com.project.backend.enums.PaymentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Table(name = "payment_details")
 public class PaymentDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @OneToOne

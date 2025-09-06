@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "sub_categories")
 public class SubCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne

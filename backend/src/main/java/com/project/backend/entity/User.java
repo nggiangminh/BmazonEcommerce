@@ -1,5 +1,6 @@
 package com.project.backend.entity;
 
+import com.project.backend.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
 	@Column(name = "avatar")
@@ -55,7 +56,15 @@ public class User {
 	@Column(name = "role", nullable = false)
 	private Role role;
 
-	public User() {}
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public User() {}
 
 	public UUID getId() {
 		return id;

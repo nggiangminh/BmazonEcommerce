@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "products_skus")
 public class ProductSku {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne
