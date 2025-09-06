@@ -19,8 +19,11 @@ public class UserDTO {
     private LocalDateTime createAt;
     private Role role;
 
-    public UserDTO(UUID id, String avatar, String firstName, String lastName, String username, String email, LocalDate birthOfDate, String phoneNumber, LocalDateTime createAt, Role role) {
+    public UserDTO() {
+        // Default constructor for JSON serialization
+    }
 
+    public UserDTO(UUID id, String avatar, String firstName, String lastName, String username, String email, LocalDate birthOfDate, String phoneNumber, LocalDateTime createAt, Role role) {
         this.id = id;
         this.avatar = avatar;
         this.firstName = firstName;

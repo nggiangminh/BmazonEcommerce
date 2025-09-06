@@ -5,7 +5,6 @@ import com.project.backend.dto.request.updateUserRequest;
 import com.project.backend.dto.response.UserDTO;
 import com.project.backend.entity.User;
 import com.project.backend.repository.UserRepository;
-import com.project.backend.service.UserService;
 import com.project.backend.exception.ResourceNotFoundException;
 import com.project.backend.exception.DuplicateResourceException;
 import com.project.backend.mapper.UserMapper;
