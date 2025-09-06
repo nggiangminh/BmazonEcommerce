@@ -12,7 +12,8 @@ import com.project.backend.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +30,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO createUser(createUserRequest request) {
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword());
 
         User savedUser = userRepository.save(user);
         return userMapper.toDTO(savedUser);
@@ -122,5 +121,20 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmailAndNotDeleted(email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isCurrentUser(UUID userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+        
+        String currentUsername = authentication.getName();
+        User currentUser = userRepository.findByUsernameAndNotDeleted(currentUsername)
+                .orElse(null);
+        
+        return currentUser != null && currentUser.getId().equals(userId);
     }
 }

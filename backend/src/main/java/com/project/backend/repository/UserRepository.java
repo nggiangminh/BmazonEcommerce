@@ -1,6 +1,7 @@
 package com.project.backend.repository;
 
 import com.project.backend.entity.User;
+import com.project.backend.enums.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,5 +33,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.email = :email AND u.deletedAt IS NULL")
     boolean existsByEmailAndNotDeleted(@Param("email") String email);
+
+    // Admin statistics methods
+    @Query("SELECT COUNT(u) FROM User u WHERE u.deletedAt IS NULL")
+    long countByDeletedAtIsNull();
+    
+    @Query("SELECT COUNT(u) FROM User u WHERE u.role = :role AND u.deletedAt IS NULL")
+    long countByRoleAndDeletedAtIsNull(@Param("role") Role role);
 
 }
