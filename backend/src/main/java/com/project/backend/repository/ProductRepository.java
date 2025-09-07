@@ -103,4 +103,70 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     
     @Query(value = "SELECT * FROM products WHERE deleted_at IS NULL ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
     List<Product> findRandomProducts(@Param("limit") int limit);
+    
+    // Advanced search queries
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NULL AND " +
+           "(:query IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%'))) AND " +
+           "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
+           "(:minPrice IS NULL OR EXISTS (SELECT ps FROM ProductSku ps WHERE ps.product = p AND ps.price >= :minPrice AND ps.deletedAt IS NULL)) AND " +
+           "(:maxPrice IS NULL OR EXISTS (SELECT ps FROM ProductSku ps WHERE ps.product = p AND ps.price <= :maxPrice AND ps.deletedAt IS NULL))")
+    Page<Product> findWithAdvancedFilters(@Param("query") String query, 
+                                         @Param("categoryId") UUID categoryId,
+                                         @Param("minPrice") Double minPrice,
+                                         @Param("maxPrice") Double maxPrice,
+                                         Pageable pageable);
+    
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NULL AND " +
+           "(:query IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%'))) AND " +
+           "p.category.id IN :categoryIds")
+    Page<Product> findByNameAndCategories(@Param("query") String query, 
+                                         @Param("categoryIds") List<UUID> categoryIds,
+                                         Pageable pageable);
+    
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NULL AND " +
+           "p.category.id IN :categoryIds")
+    Page<Product> findByMultipleCategories(@Param("categoryIds") List<UUID> categoryIds, Pageable pageable);
+    
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NULL AND " +
+           "EXISTS (SELECT ps FROM ProductSku ps WHERE ps.product = p AND ps.price BETWEEN :minPrice AND :maxPrice AND ps.deletedAt IS NULL)")
+    Page<Product> findByPriceRangeWithDetails(@Param("minPrice") Double minPrice, 
+                                             @Param("maxPrice") Double maxPrice, 
+                                             Pageable pageable);
+    
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NULL AND " +
+           "EXISTS (SELECT ps FROM ProductSku ps WHERE ps.product = p AND ps.quantity >= :minStock AND ps.deletedAt IS NULL)")
+    Page<Product> findByMinStock(@Param("minStock") Integer minStock, Pageable pageable);
+    
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NULL AND " +
+           "EXISTS (SELECT ps FROM ProductSku ps WHERE ps.product = p AND ps.quantity <= :maxStock AND ps.deletedAt IS NULL)")
+    Page<Product> findByMaxStock(@Param("maxStock") Integer maxStock, Pageable pageable);
+    
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NULL AND " +
+           "EXISTS (SELECT ps FROM ProductSku ps WHERE ps.product = p AND ps.quantity BETWEEN :minStock AND :maxStock AND ps.deletedAt IS NULL)")
+    Page<Product> findByStockRange(@Param("minStock") Integer minStock, 
+                                  @Param("maxStock") Integer maxStock, 
+                                  Pageable pageable);
+    
+    // Search suggestions
+    @Query("SELECT DISTINCT p.name FROM Product p WHERE p.deletedAt IS NULL AND LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%'))")
+    List<String> findProductNameSuggestions(@Param("query") String query, Pageable pageable);
+    
+    // Category statistics
+    @Query("SELECT p.category.id, p.category.name, COUNT(p) FROM Product p WHERE p.deletedAt IS NULL GROUP BY p.category.id, p.category.name")
+    List<Object[]> getCategoryStatistics();
+    
+    // Price range statistics
+    @Query("SELECT " +
+           "CASE " +
+           "WHEN ps.price < 50 THEN '0-50' " +
+           "WHEN ps.price < 100 THEN '50-100' " +
+           "WHEN ps.price < 200 THEN '100-200' " +
+           "WHEN ps.price < 500 THEN '200-500' " +
+           "ELSE '500+' " +
+           "END as priceRange, " +
+           "COUNT(DISTINCT p) as count " +
+           "FROM Product p JOIN p.productSkus ps " +
+           "WHERE p.deletedAt IS NULL AND ps.deletedAt IS NULL " +
+           "GROUP BY priceRange")
+    List<Object[]> getPriceRangeStatistics();
 }
