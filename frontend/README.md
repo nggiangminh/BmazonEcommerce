@@ -1,12 +1,14 @@
-# React + Vite
+## Frontend UI/UX (Phase 1)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Stack: React + CSS only. Warm palette (yellow, red, orange, brown). 10px radius across UI.
 
-Currently, two official plugins are available:
+Structure
+- `src/styles`: `theme.css`, `components.css`, `layouts.css`
+- `src/components/common`: Button, Input, Card, Modal, Badge, Loader
+- `src/layouts`: Navbar, Footer, Container
+- `src/pages`: Customer, Auth, Checkout, Orders, Profile, Admin
+- `src/routes/Router.jsx`: simple hash router (no external libs)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Notes
+- Phase 1 contains only UI/UX; no API calls or global state.
+- Navigation uses hash routes like `#/catalog`, `#/cart`.
