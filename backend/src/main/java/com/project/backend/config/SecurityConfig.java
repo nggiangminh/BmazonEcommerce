@@ -52,7 +52,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/",                      // Allow root path
                                 "/error",                 // Allow error page
-                                "/actuator/**"            // Allow actuator endpoints
+                                "/actuator/**",
+                                "/api/public/**"            // Allow actuator endpoints
                         )
                         .permitAll()
                         .anyRequest().authenticated()
