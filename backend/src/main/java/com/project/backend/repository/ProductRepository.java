@@ -71,4 +71,36 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     // Count products by category that are not deleted
     @Query("SELECT COUNT(p) FROM Product p WHERE p.category.id = :categoryId AND p.deletedAt IS NULL")
     long countByCategoryIdActive(@Param("categoryId") UUID categoryId);
+    
+    // Admin specific queries
+    @Query("SELECT p FROM Product p")
+    Page<Product> findAllIncludingDeleted(Pageable pageable);
+    
+    @Query("SELECT p FROM Product p WHERE p.id = :id")
+    Optional<Product> findByIdIncludingDeleted(@Param("id") UUID id);
+    
+    @Query("SELECT p FROM Product p WHERE p.deletedAt IS NOT NULL")
+    Page<Product> findAllDeleted(Pageable pageable);
+    
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.deletedAt IS NOT NULL")
+    long countDeleted();
+    
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.deletedAt IS NULL")
+    long countAvailable();
+    
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.deletedAt IS NULL AND NOT EXISTS (SELECT ps FROM ProductSku ps WHERE ps.product = p AND ps.quantity > 0 AND ps.deletedAt IS NULL)")
+    long countOutOfStock();
+    
+    // User specific queries
+    @Query(value = "SELECT * FROM products WHERE deleted_at IS NULL ORDER BY created_at DESC LIMIT :limit", nativeQuery = true)
+    List<Product> findFeaturedProducts(@Param("limit") int limit);
+    
+    @Query(value = "SELECT * FROM products WHERE deleted_at IS NULL ORDER BY created_at DESC LIMIT :limit", nativeQuery = true)
+    List<Product> findTrendingProducts(@Param("limit") int limit);
+    
+    @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId AND p.id != :productId AND p.deletedAt IS NULL")
+    List<Product> findSimilarProducts(@Param("categoryId") UUID categoryId, @Param("productId") UUID productId);
+    
+    @Query(value = "SELECT * FROM products WHERE deleted_at IS NULL ORDER BY RANDOM() LIMIT :limit", nativeQuery = true)
+    List<Product> findRandomProducts(@Param("limit") int limit);
 }
