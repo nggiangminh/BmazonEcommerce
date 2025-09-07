@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useAuth } from '../context/AuthContext.js'
 import Home from '../pages/Home'
 import Catalog from '../pages/Catalog'
 import ProductDetail from '../pages/ProductDetail'
@@ -35,6 +36,7 @@ const routes = {
 }
 
 const Router = () => {
+  const { token } = useAuth()
   const [path, setPath] = useState(window.location.hash.slice(1) || '/')
 
   useEffect(() => {
@@ -43,7 +45,10 @@ const Router = () => {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
-  const Component = routes[path] || Home
+  // Basic guard for admin pages (UI-only)
+  const isAdminPath = path.startsWith('/admin')
+  const guardedPath = isAdminPath && !token ? '/login' : path
+  const Component = routes[guardedPath] || Home
 
   return (
     <React.Suspense fallback={<div className="container" style={{ padding: 16 }}>Loading…</div>}>
