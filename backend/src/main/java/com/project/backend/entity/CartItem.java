@@ -1,14 +1,10 @@
 package com.project.backend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,24 +15,26 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "products_sku_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "products_sku_id", nullable = false)
     private ProductSku productSku;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
@@ -62,5 +60,38 @@ public class CartItem {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    // Helper methods
+    public BigDecimal getSubtotal() {
+        if (productSku != null && productSku.getPrice() != null) {
+            return productSku.getPrice().multiply(BigDecimal.valueOf(quantity));
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public void increaseQuantity(int amount) {
+        this.quantity += amount;
+    }
+
+    public void decreaseQuantity(int amount) {
+        this.quantity = Math.max(0, this.quantity - amount);
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = Math.max(0, quantity);
+    }
+
+    public boolean isAvailable() {
+        return productSku != null && 
+               productSku.getQuantity() != null && 
+               productSku.getQuantity() >= quantity;
+    }
+
+    public int getAvailableQuantity() {
+        if (productSku != null && productSku.getQuantity() != null) {
+            return productSku.getQuantity();
+        }
+        return 0;
+    }
 }
 
